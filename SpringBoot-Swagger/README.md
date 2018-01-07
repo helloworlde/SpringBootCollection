@@ -196,3 +196,5 @@ public class ProductController {
 ![](storage/all.png)
 ![](storage/test.png)
 ![](storage/test2.png)
+
+[相关注解说明](https://github.com/helloworlde/SpringBootCollection/blob/master/SpringBoot-Swagger/Swagger.md)
