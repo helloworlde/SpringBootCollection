@@ -74,3 +74,5 @@ flyway.enabled=false
 
 ## 注意
 > 如果按照 Flyway [官方文档](https://flywaydb.org/documentation/plugins/springboot) 的指导，仅配置 Flyway，应用启动时并不会执行 Flyway 的任何操作，这是因为 [`FlywayAutoConfiguration 类`](https://docs.spring.io/spring-boot/docs/1.4.x/api/org/springframework/boot/autoconfigure/flyway/FlywayAutoConfiguration.html)在启动时要求有 DataSource 的实例，如果没有配置，就不会执行 Flyway，所以在依赖里添加了 MyBatis(或 JPA) ，使用 MyBatis(或 JPA) 时会自动注入数据源，因此才会执行 Flyway，具体可以参考[https://github.com/spring-projects/spring-boot/issues/8649](https://github.com/spring-projects/spring-boot/issues/8649), [https://stackoverflow.com/questions/43496506/how-to-debug-when-flyway-doesnt-work-on-spring-boot](https://stackoverflow.com/questions/43496506/how-to-debug-when-flyway-doesnt-work-on-spring-boot)
+
+> 如果是多个数据源，则需要在 Flyway 进行操作的数据源 Bean 上添加 `@FlywayDataSource`注解或者在 `application.properties` 里添加 `spring.flyway.[url,user,password]`进行配置
