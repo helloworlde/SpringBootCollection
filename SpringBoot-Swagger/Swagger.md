@@ -21,8 +21,7 @@
 | 					 |dataType|字符串| 参数类型|
 |					 |dataTypeClass|类| 参数对应的类|
 |                     | defaultValue | 字符串 | 在api测试中默认值 |
-||| |     `            @ApiImplicitParam(name = "newProduct", value = "商品信息对象", required = true, dataType = "Product", dataTypeClass = Product.class)`
- |
+||| |     `            @ApiImplicitParam(name = "newProduct", value = "商品信息对象", required = true, dataType = "Product", dataTypeClass = Product.class)`|
 | `@ApiResponses` | {} | `@ApiResponse`数组 | 可用在方法头上.参数的描述容器 |
 | | | | `@ApiResponses({@ApiResponse1,@ApiResponse2,...})` |
 | `@ApiResponse`      | code         | 整形   | 可用在`@ApiResponses`里 |
