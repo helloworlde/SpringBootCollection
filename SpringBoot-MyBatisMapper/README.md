@@ -243,11 +243,3 @@ public interface ProductDao extends CommonMapper<Product> {
 
 ## 使用
 > 直接调用 Service 的方法就可以实现正常的单表 CRUD，但是对于多表的操作依然需要写在 XML 里
-
-
---------------------------
-
-## MyBatis Plus 和 通用 Mapper+PageHelper 比较
-> MyBatis Plus 在功能上更加强大，支持单表的 CRUD，分页，单表多条件查询，还支持乐观锁，热更新，条件构造等等功能，对于单表几乎不需要写 SQL 语句就可以实现几乎所有的操作；但是其分页相对比较弱，需要传入指定对象，并且不能直接返回分页的信息；
-> 通用 Mapper 相对比较轻量，也可是实现单表的 CRUD 操作；配合 PageHelper 实现分页可以满足正常的使用，可以直接通过 PageInfo 对象返回分页信息；
-> MyBatis Plus 和 PageHelper 又似乎有些多余，但是却是目前最好的方式，既可以实现单表的条件构造查询，又可以较好的实现分页，但是有两种分页方式一起存在又会显得多余
