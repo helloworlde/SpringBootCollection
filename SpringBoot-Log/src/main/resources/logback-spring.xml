@@ -49,13 +49,23 @@
     </appender>
 
     <!--日志异步到数据库 -->
+    <!--<appender name="DB" class="ch.qos.logback.classic.db.DBAppender">-->
+        <!--&lt;!&ndash;日志异步到数据库&ndash;&gt;-->
+        <!--<connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">-->
+            <!--<driverClass>com.mysql.jdbc.Driver</driverClass>-->
+            <!--<url>jdbc:mysql://localhost:3306/log?useSSL=false</url>-->
+            <!--<user>root</user>-->
+            <!--<password>123456</password>-->
+        <!--</connectionSource>-->
+    <!--</appender>-->
+
     <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
         <!--日志异步到数据库-->
         <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
-            <driverClass>com.mysql.jdbc.Driver</driverClass>
-            <url>jdbc:mysql://ali.hellowood.com.cn:3306/log?useSSL=false</url>
+            <driverClass>org.h2.Driver</driverClass>
+            <url>jdbc:h2:mem:test</url>
             <user>root</user>
-            <password>ihaveapen*^@#</password>
+            <password>123456</password>
         </connectionSource>
     </appender>
 
@@ -69,13 +79,7 @@
 
 
     <!-- MyBatis 日志打印 -->
-    <!--<logger name="com.ibatis" level="DEBUG" />-->
-    <!--<logger name="com.ibatis.common.jdbc.SimpleDataSource" level="DEBUG" />-->
-    <!--<logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG" />-->
-    <!--<logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="DEBUG" />-->
-    <!--<logger name="java.sql.Connection" level="DEBUG" />-->
-    <!--<logger name="java.sql.Statement" level="DEBUG" />-->
-    <!--<logger name="java.sql.PreparedStatement" level="DEBUG" />-->
+    <logger name="cn.com.hellowood.mapper" level="DEBUG" />
 
     <logger name="org.springframework" level="WARN" />
     <!--指定最基础的日志输出级别-->

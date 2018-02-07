@@ -15,9 +15,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
-group = 'cn.com.hellowood'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
+archivesBaseName = 'ElasticSearch'
 
 repositories {
 	maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }

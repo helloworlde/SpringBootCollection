@@ -1,0 +1,10 @@
+rootProject.name = 'SpringBootApplicationCollection'
+
+include 'SpringBoot-ElasticSearch'
+include 'SpringBoot-ELK'
+include 'SpringBoot-Flyway'
+include 'SpringBoot-Log'
+include 'SpringBoot-MyBatisMapper'
+include 'SpringBoot-MyBatisPage'
+include 'SpringBoot-MyBatisPlus'
+include 'SpringBoot-Swagger'
