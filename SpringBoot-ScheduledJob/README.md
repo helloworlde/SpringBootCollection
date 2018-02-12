@@ -1,5 +1,5 @@
 # SpringBoot 中使用 Quartz 定时任务
-``
+
 > 在 SpringBoot 中通过 `@Schedule`注解就可以简单的实现定时任务，但是这种方式够灵活，如果想要修改执行状态就必须修改代码；另外一种实现方式是通过 [`Quartz`](http://www.quartz-scheduler.org/) 实现任务调度
 
 ## 通过 SpringBoot 实现简单任务
@@ -90,7 +90,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.1')
     runtime('mysql:mysql-connector-java')
-    // runtime('com.h2database:h2')
+    runtime('com.h2database:h2')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
