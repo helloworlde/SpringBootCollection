@@ -262,3 +262,10 @@ public interface ProductDao extends CommonMapper<Product> {
 
 ## 使用
 > 直接调用 Service 的方法就可以实现正常的单表 CRUD，但是对于多表的操作依然需要写在 XML 里
+
+
+--------------------
+
+### 注意
+
+- 使用 CodeGenerator 生成 Mapper 接口后需要添加 @Mapper 注解，否则会报错，或者在 Application.java 添加 @MapperScan("MAPPER_INTERFACE_PACKAGE")
