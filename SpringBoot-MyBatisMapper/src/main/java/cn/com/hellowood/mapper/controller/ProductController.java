@@ -2,7 +2,7 @@ package cn.com.hellowood.mapper.controller;
 
 import cn.com.hellowood.mapper.common.CommonResponse;
 import cn.com.hellowood.mapper.common.ResponseUtil;
-import cn.com.hellowood.mapper.modal.Product;
+import cn.com.hellowood.mapper.model.Product;
 import cn.com.hellowood.mapper.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

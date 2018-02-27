@@ -1,4 +1,4 @@
-package cn.com.hellowood.mapper.modal;
+package cn.com.hellowood.mapper.model;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

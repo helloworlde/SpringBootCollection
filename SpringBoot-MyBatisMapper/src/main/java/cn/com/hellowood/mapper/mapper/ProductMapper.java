@@ -1,8 +1,8 @@
-package cn.com.hellowood.mapper.dao;
+package cn.com.hellowood.mapper.mapper;
 
 
 import cn.com.hellowood.mapper.common.CommonMapper;
-import cn.com.hellowood.mapper.modal.Product;
+import cn.com.hellowood.mapper.model.Product;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -12,5 +12,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2017-07-11 10:54
  */
 @Mapper
-public interface ProductDao extends CommonMapper<Product> {
+public interface ProductMapper extends CommonMapper<Product> {
 }

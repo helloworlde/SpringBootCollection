@@ -1,6 +1,6 @@
 package cn.com.hellowood.mapper;
 
-import cn.com.hellowood.mapper.modal.Product;
+import cn.com.hellowood.mapper.model.Product;
 import cn.com.hellowood.mapper.service.ProductService;
 import cn.com.hellowood.mapper.utils.ServiceException;
 import org.junit.Test;

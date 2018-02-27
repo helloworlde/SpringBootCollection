@@ -80,6 +80,7 @@ import cn.com.hellowood.mapper.utils.ServiceException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Condition;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,8 +89,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+/**
+ * The type Base service.
+ *
+ * @param <T> the type parameter
+ */
 public abstract class BaseService<T> implements CommonService<T> {
 
+    /**
+     * real class type of current generic
+     */
     private Class<T> modelClass;
 
     @Autowired
@@ -98,6 +107,9 @@ public abstract class BaseService<T> implements CommonService<T> {
     @Autowired
     HttpServletRequest request;
 
+    /**
+     * Instantiates a new Base service.
+     */
     public BaseService() {
         ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
         this.modelClass = (Class<T>) type.getActualTypeArguments()[0];
@@ -105,26 +117,31 @@ public abstract class BaseService<T> implements CommonService<T> {
 
 
     @Override
+    @Transactional
     public Integer save(T model) {
         return commonMapper.insertSelective(model);
     }
 
     @Override
+    @Transactional
     public Integer save(List<T> models) {
         return commonMapper.insertList(models);
     }
 
     @Override
+    @Transactional
     public Integer deleteById(Serializable id) {
         return commonMapper.deleteByPrimaryKey(id);
     }
 
     @Override
+    @Transactional
     public Integer deleteByIds(String ids) {
         return commonMapper.deleteByIds(ids);
     }
 
     @Override
+    @Transactional
     public Integer update(T model) {
         return commonMapper.updateByPrimaryKeySelective(model);
     }
@@ -160,6 +177,7 @@ public abstract class BaseService<T> implements CommonService<T> {
 
     @Override
     public List<T> getAll() {
+        PageHelper.startPage(0, 0);
         return commonMapper.selectAll();
     }
 
@@ -171,6 +189,7 @@ public abstract class BaseService<T> implements CommonService<T> {
     }
 
 }
+
 ```
 - CommonMapper.java
 ```java
@@ -190,7 +209,7 @@ public interface CommonMapper<T> extends BaseMapper<T>,
 
 - Product.java
 ```java
-package cn.com.hellowood.mapper.modal;
+package cn.com.hellowood.mapper.model;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -218,7 +237,7 @@ package cn.com.hellowood.mapper.dao;
 
 
 import cn.com.hellowood.mapper.common.CommonMapper;
-import cn.com.hellowood.mapper.modal.Product;
+import cn.com.hellowood.mapper.model.Product;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -230,9 +249,9 @@ public interface ProductDao extends CommonMapper<Product> {
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.com.hellowood.mapper.dao.ProductDao">
+<mapper namespace="cn.com.hellowood.mapper.mapper.ProductMapper">
 
-    <resultMap id="baseResultMap" type="cn.com.hellowood.mapper.modal.Product">
+    <resultMap id="baseResultMap" type="cn.com.hellowood.mapper.model.Product">
         <id column="id" property="id" javaType="java.lang.Integer" jdbcType="INTEGER"></id>
         <result column="name" property="name" javaType="java.lang.String" jdbcType="VARCHAR"></result>
         <result column="price" property="price" javaType="java.lang.Double" jdbcType="BIGINT"></result>

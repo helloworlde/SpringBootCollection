@@ -6,6 +6,7 @@ import cn.com.hellowood.mapper.utils.ServiceException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Condition;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,26 +43,31 @@ public abstract class BaseService<T> implements CommonService<T> {
 
 
     @Override
+    @Transactional
     public Integer save(T model) {
         return commonMapper.insertSelective(model);
     }
 
     @Override
+    @Transactional
     public Integer save(List<T> models) {
         return commonMapper.insertList(models);
     }
 
     @Override
+    @Transactional
     public Integer deleteById(Serializable id) {
         return commonMapper.deleteByPrimaryKey(id);
     }
 
     @Override
+    @Transactional
     public Integer deleteByIds(String ids) {
         return commonMapper.deleteByIds(ids);
     }
 
     @Override
+    @Transactional
     public Integer update(T model) {
         return commonMapper.updateByPrimaryKeySelective(model);
     }
@@ -97,6 +103,7 @@ public abstract class BaseService<T> implements CommonService<T> {
 
     @Override
     public List<T> getAll() {
+        PageHelper.startPage(0, 0);
         return commonMapper.selectAll();
     }
 

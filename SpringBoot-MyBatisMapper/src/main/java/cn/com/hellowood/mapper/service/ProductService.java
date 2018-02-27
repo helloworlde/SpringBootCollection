@@ -1,16 +1,8 @@
 package cn.com.hellowood.mapper.service;
 
-import cn.com.hellowood.mapper.dao.ProductDao;
-import cn.com.hellowood.mapper.modal.Product;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import cn.com.hellowood.mapper.common.CommonService;
+import cn.com.hellowood.mapper.model.Product;
 
-
-@Service
-public class ProductService extends BaseService<Product> {
-
-    @Autowired
-    private ProductDao productDao;
-
+public interface ProductService extends CommonService<Product> {
 
 }
