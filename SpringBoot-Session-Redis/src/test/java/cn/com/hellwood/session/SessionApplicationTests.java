@@ -1,4 +1,4 @@
-//package cn.com.hellowood.mail;
+//package cn.com.hellwood.session;
 //
 //import org.junit.Test;
 //import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@
 //
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
-//public class SpringBootMailApplicationTests {
+//public class SessionApplicationTests {
 //
 //	@Test
 //	public void contextLoads() {

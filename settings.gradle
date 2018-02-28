@@ -10,3 +10,5 @@ include 'SpringBoot-MyBatisPlus'
 include 'SpringBoot-Swagger'
 include 'SpringBoot-ScheduledJob'
 include 'SpringBoot-Mail'
+include 'SpringBoot-Session-Redis'
+
