@@ -11,4 +11,5 @@ include 'SpringBoot-Swagger'
 include 'SpringBoot-ScheduledJob'
 include 'SpringBoot-Mail'
 include 'SpringBoot-Session-Redis'
+include 'SpringBoot-Session-JDBC'
 
