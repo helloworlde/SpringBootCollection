@@ -9,7 +9,7 @@ import java.util.Properties;
 @Configuration
 public class MyBatisConfig {
 
-    private final String MAPPER_PACKAGE = "cn.com.hellowood.mapper.dao";
+    private final String MAPPER_PACKAGE = "cn.com.hellowood.mapper.mapper";
     private final String MAPPER_INTERFACE_REFERENCE = "cn.com.hellowood.mapper.common.CommonMapper";
 
     @Bean
