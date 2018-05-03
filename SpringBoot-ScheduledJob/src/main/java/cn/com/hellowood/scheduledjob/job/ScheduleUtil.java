@@ -57,6 +57,9 @@ public class ScheduleUtil {
      * @throws ServiceException
      */
     public static void createScheduleJob(Scheduler scheduler, ScheduleJob scheduleJob) throws ServiceException {
+
+        validateCronExpression(scheduleJob);
+
         try {
             // Get Job class from ScheduleJob entity
             Class<? extends Job> jobClass = (Class<? extends Job>) Class.forName(scheduleJob.getClassName()).newInstance().getClass();
@@ -102,6 +105,9 @@ public class ScheduleUtil {
      * @throws ServiceException
      */
     public static void updateScheduleJob(Scheduler scheduler, ScheduleJob scheduleJob) throws ServiceException {
+
+        validateCronExpression(scheduleJob);
+
         try {
 
             TriggerKey triggerKey = getTriggerKey(scheduleJob);
@@ -203,4 +209,15 @@ public class ScheduleUtil {
         }
     }
 
+    /**
+     * Validate Cron express
+     *
+     * @param scheduleJob
+     * @throws ServiceException
+     */
+    public static void validateCronExpression(ScheduleJob scheduleJob) throws ServiceException {
+        if (!CronExpression.isValidExpression(scheduleJob.getCronExpression())) {
+            throw new ServiceException(String.format("Job %s expression %s is not correct!", scheduleJob.getClassName(), scheduleJob.getCronExpression()));
+        }
+    }
 }

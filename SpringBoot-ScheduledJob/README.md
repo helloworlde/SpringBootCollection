@@ -135,6 +135,72 @@ spring.profiles.active=dev
 
 ### 实现
 
+- ScheduleConfig.java 
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+
+import javax.sql.DataSource;
+
+
+@Configuration
+public class ScheduleConfig {
+
+    @Autowired
+    private ScheduleJobFactory jobFactory;
+    
+    /**
+     * To Configuration Quartz , not necessary, if not config this, will use default
+     *
+     * @param dataSource
+     * @return
+     */
+    @Bean
+    public SchedulerFactoryBean schedulerFactoryBean(@Qualifier("dataSource") DataSource dataSource) {
+        SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
+        schedulerFactoryBean.setSchedulerName("TASK_EXECUTOR");
+        schedulerFactoryBean.setStartupDelay(10);
+        schedulerFactoryBean.setApplicationContextSchedulerContextKey("applicationContextKey");
+        schedulerFactoryBean.setOverwriteExistingJobs(true);
+        schedulerFactoryBean.setAutoStartup(true);
+        schedulerFactoryBean.setDataSource(dataSource);
+        // 将 Job 交由 Spring 进行管理
+        schedulerFactoryBean.setJobFactory(jobFactory);
+        return schedulerFactoryBean;
+    }
+}
+```
+
+- ScheduleJobFactory.java
+```java
+import org.quartz.spi.TriggerFiredBundle;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.scheduling.quartz.AdaptableJobFactory;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ScheduleJobFactory extends AdaptableJobFactory {
+
+    @Autowired
+    private AutowireCapableBeanFactory autowireCapableBeanFactory;
+
+    /**
+     * 将 JobFactory 注入 Spring 容器中，用于依赖管理，否则会导致 Job 中注入的 Bean 为 null
+     */
+    @Override
+    protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
+        Object jobInstance = super.createJobInstance(bundle);
+        autowireCapableBeanFactory.autowireBean(jobInstance);
+        return jobInstance;
+    }
+}
+```
+
 - ScheduleJob.java
 
 ```java
@@ -228,6 +294,9 @@ public class ScheduleUtil {
      * @throws ServiceException
      */
     public static void createScheduleJob(Scheduler scheduler, ScheduleJob scheduleJob) throws ServiceException {
+        
+        validateCronExpression(scheduleJob);
+    
         try {
             // 要执行的 Job 的类
             Class<? extends Job> jobClass = (Class<? extends Job>) Class.forName(scheduleJob.getClassName()).newInstance().getClass();
@@ -270,6 +339,9 @@ public class ScheduleUtil {
      * @throws ServiceException
      */
     public static void updateScheduleJob(Scheduler scheduler, ScheduleJob scheduleJob) throws ServiceException {
+    
+        validateCronExpression(scheduleJob);
+
         try {
 
             TriggerKey triggerKey = getTriggerKey(scheduleJob);
@@ -368,7 +440,18 @@ public class ScheduleUtil {
             throw new ServiceException("Delete job failed", e);
         }
     }
-
+    
+    /**
+     * 校验 Cron 表达式
+     *
+     * @param scheduleJob
+     * @throws ServiceException
+     */
+    public static void validateCronExpression(ScheduleJob scheduleJob) throws ServiceException {
+        if (!CronExpression.isValidExpression(scheduleJob.getCronExpression())) {
+            throw new ServiceException(String.format("Job %s expression %s is not correct!", scheduleJob.getClassName(), scheduleJob.getCronExpression()));
+        }
+    }
 }
 ```
 
@@ -528,18 +611,18 @@ public class JobController {
     }
 
 
-    @GetMapping("/run/{id}")
+    @PutMapping("/run/{id}")
     public CommonResponse runJob(@PathVariable("id") Long jobId) throws ServiceException {
         return ResponseUtil.generateResponse(jobService.run(jobId));
     }
 
 
-    @GetMapping("/pause/{id}")
+    @PutMapping("/pause/{id}")
     public CommonResponse pauseJob(@PathVariable("id") Long jobId) throws ServiceException {
         return ResponseUtil.generateResponse(jobService.pause(jobId));
     }
 
-    @GetMapping("/resume/{id}")
+    @PutMapping("/resume/{id}")
     public CommonResponse resumeJob(@PathVariable("id") Long jobId) throws ServiceException {
         return ResponseUtil.generateResponse(jobService.resume(jobId));
     }

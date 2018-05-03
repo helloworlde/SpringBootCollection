@@ -41,18 +41,18 @@ public class JobController {
     }
 
 
-    @GetMapping("/run/{id}")
+    @PutMapping("/run/{id}")
     public CommonResponse runJob(@PathVariable("id") Long jobId) throws ServiceException {
         return ResponseUtil.generateResponse(jobService.run(jobId));
     }
 
 
-    @GetMapping("/pause/{id}")
+    @PutMapping("/pause/{id}")
     public CommonResponse pauseJob(@PathVariable("id") Long jobId) throws ServiceException {
         return ResponseUtil.generateResponse(jobService.pause(jobId));
     }
 
-    @GetMapping("/resume/{id}")
+    @PutMapping("/resume/{id}")
     public CommonResponse resumeJob(@PathVariable("id") Long jobId) throws ServiceException {
         return ResponseUtil.generateResponse(jobService.resume(jobId));
     }
