@@ -14,5 +14,5 @@ include 'SpringBoot-Mail'
 include 'SpringBoot-Session-Redis'
 include 'SpringBoot-Session-JDBC'
 include 'SpringBoot-ConfigServer'
-//include 'SpringBoot-Config-Client'
+include 'SpringBoot-ConfigClient'
 

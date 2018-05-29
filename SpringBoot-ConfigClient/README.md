@@ -7,10 +7,9 @@
 ## 配置 Spring Cloud Config 应用
 
 #### 创建  Spring Cloud Config 应用
-
 #### 添加依赖
 
-```groovy
+```gradle
 buildscript {
     ext {
         springBootVersion = '2.0.2.RELEASE'
@@ -57,7 +56,6 @@ dependencyManagement {
 ```
 
 #### 添加配置文件 
-
 配置文件可以使用本地文件或者 Git 仓库的配置文件；使用本地文件的限制比较多，推荐使用  Git 仓库，该仓库可以是本地的或者远程的仓库
 
  - mysqldb/mysqldb-dev.properties
@@ -118,7 +116,6 @@ spring.datasource.password=123456
 ```
 
 #### 修改配置
-
 - application.properties
 
 ```properties
@@ -135,9 +132,7 @@ spring.cloud.config.server.git.basedir=./config-repo
 `label`可以使用不同的分支，名称即为分支名称
 `basedir`指向当前项目文件夹，用于保存从仓库复制的配置文件，默认指向服务 `/tmp`目录，该目录可能会被系统清理掉
 如果需要登录仓库可以使用用户名和密码，或者配置 ssh 登录
-
 #### 启用 Spring Cloud Config
-
 在应用启动类添加 `@EnableConfigServer`
 
 ```java
@@ -154,3 +149,131 @@ public class ConfigserverApplication {
     }
 }
 ```
+
+## 使用 Spring Cloud Config 
+
+#### 创建应用
+
+#### 添加依赖
+
+- build.gradle
+
+```groovy
+buildscript {
+    ext {
+        springBootVersion = '2.0.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+archivesBaseName = 'ConfigClient'
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+
+ext {
+    springCloudVersion = 'Finchley.BUILD-SNAPSHOT'
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.cloud:spring-cloud-starter-config')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    runtime('mysql:mysql-connector-java')
+    runtime('com.h2database:h2')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+```
+#### 修改配置文件
+
+- 添加 `bootsrap.properties`
+
+```properties
+spring.cloud.config.uri=${cloud.config.url:http://localhost:8888}
+```
+
+> 配置中心地址通过`cloud.config.url`参数获取，当该参数不存在时从`http://localhost:8080`获取
+
+- 修改 `application.properties`
+
+```properties
+server.port=8080
+spring.profiles.active=dev
+spring.cloud.config.profile=${spring.profiles.active:dev}
+spring.cloud.config.name=h2db
+spring.jpa.show-sql=true
+```
+
+> 使用的 Spring Cloud Config 的环境和应用使用的环境一致，`:dev`表示当没有设置时默认使用 `dev`环境
+> `spring.cloud.config.name=`后面添加需要获取的配置，在这里可以是`h2db`或`mysqldb`和其他添加在`Git`配置仓库中的配置前缀
+
+#### 配置接口
+
+- ProductController
+
+```java
+import cn.com.hellowood.configclient.model.Product;
+import cn.com.hellowood.configclient.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ * @author HelloWood
+ */
+@RestController
+public class ProductController {
+
+    @Autowired
+    private ProductService productService;
+
+    @GetMapping("/")
+    public String root() {
+        return "Hello";
+    }
+
+    @GetMapping("/product/{id}")
+    public Product getProduct(@PathVariable Long id) {
+        return productService.getProduct(id);
+    }
+
+    @GetMapping("/product")
+    public List<Product> getProducts() {
+        return productService.getProducts();
+    }
+
+    @PostMapping("/product")
+    public Product saveProduct(@RequestBody Product product) {
+        return productService.saveProduct(product);
+    }
+}
+```
+
+- 省略`ProductService`, `ProductServiceImpl`, `ProductDao`等类
+
+#### 测试
+
+启动`ConfigServer`
+配置`spring.profiles.active=dev`, `spring.cloud.config.name=h2db`, 启动应用，此时可以从启动日志看到加载了`h2db-dev`相关的配置；改为`spring.profiles.active= test`, `spring.cloud.config.name=mysqldb`，可以从启动日志看到加载了`mysqldb-test`的相关配置，说明配置中心配置成功
