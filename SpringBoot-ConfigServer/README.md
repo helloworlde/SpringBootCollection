@@ -154,3 +154,30 @@ public class ConfigserverApplication {
     }
 }
 ```
+
+#### 加密 
+
+- 生成密钥文件并移动到 `src/main/resources/`下
+
+```
+keytool -genkeypair -alias config-server -keyalg RSA \
+  -dname "CN=HelloWood,OU=HelloWood,O=HelloWood,L=Beijing,S=Beijing,C=China" \
+  -keypass HelloWood -keystore config-server.jks -storepass HelloWood -validity 365
+```
+
+- 添加 `bootstrap.properties` 配置文件
+
+```properties
+encrypt.key-store.location=config-server.jks
+encrypt.key-store.alias=config-server
+encrypt.key-store.password=HelloWood
+encrypt.key-store.secret=HelloWood
+```
+
+- 加密配置文件
+
+```
+curl localhost:8888/encrypt -d jdbc:mysql://localhost:3306/prod?useSSL=false
+```
+
+将得到的加密的字符串添加 `{cipher}`前缀后添加到配置文件中即完成了加密
