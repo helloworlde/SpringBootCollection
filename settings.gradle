@@ -16,4 +16,5 @@ include 'SpringBoot-Session-JDBC'
 include 'SpringBoot-ConfigServer'
 include 'SpringBoot-ConfigClient'
 include 'SpringBoot-Https'
+include 'SpringBoot-CustomResponse'
 
