@@ -1,4 +1,4 @@
-# SpringBoot 使用 Spring Session 实现 Session 共享
+# SpringBoot 使用 Spring Session 实现 Session 共享 - Redis 存储
 
 ## 通过 Redis 共享 
 
