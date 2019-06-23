@@ -51,6 +51,7 @@
 ### 消息 
 
 - [Spring Boot 发送邮件](SpringBoot-Mail/README.md)
+- [Spring Boot 使用WebSocket](SpringBoot-WebSocket/README.md)
 
 ### MyBatis 
 

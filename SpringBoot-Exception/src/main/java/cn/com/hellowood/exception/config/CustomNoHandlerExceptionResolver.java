@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 /**
- * @author hehuimin
+ * @author HelloWood
  */
 @Controller
 @RequestMapping("/error")
