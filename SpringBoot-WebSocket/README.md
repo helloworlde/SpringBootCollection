@@ -229,12 +229,19 @@ function sendMessage() {
 
 - 启动应用，打开两个浏览器，访问 [http://localhost:8080/](http://localhost:8080/)
 
-![localhost:8080](img/WebSocket1.png)
+![localhost:8080](../img/WebSocket1.png)
 
 - 点击 Connect，建立连接
 
-![建立连接](img/WebSocket2.png)
+![建立连接](../img/WebSocket2.png)
 
 - 其中任意一个发送一个消息，两个浏览器都可以接受到这个消息
 
-![发送消息](img/WebSocket3.png)
+![发送消息](../img/WebSocket3.png)
+
+-------------
+
+### 参考文档 
+
+- [Using WebSocket to build an interactive web application](https://spring.io/guides/gs/messaging-stomp-websocket/)
+- [Spring Boot + WebSockets + Angular 5](https://medium.com/oril/spring-boot-websockets-angular-5-f2f4b1c14cee)
