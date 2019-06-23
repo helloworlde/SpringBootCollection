@@ -18,7 +18,11 @@ function connect() {
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected:' + frame);
-        stompClient.subscribe('/response/message', function (message) {
+        var userName = JSON.parse(JSON.stringify(frame.headers).replace('user-name', 'username')).username;
+        var destination = '/user/' + userName + '/response/message';
+        // var destination = '/response/message';
+        console.log("Destination is :" + destination);
+        stompClient.subscribe(destination, function (message) {
             console.log("Receive message from server:" + message);
             showMessage(JSON.parse(message.body));
         });
