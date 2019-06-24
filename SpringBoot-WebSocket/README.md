@@ -8,7 +8,7 @@
 
 - build.gradle 
 
-```groovy
+```gradle
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-websocket")
     compile("org.webjars:webjars-locator-core")
@@ -21,9 +21,7 @@ dependencies {
 }
 ```
 
-### 实现
-
-#### 配置 
+### 配置 
 
 - WebSocketConfig.java
 
@@ -47,197 +45,198 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 其中`/topic` 是用于推送给客户端的消息路径前缀；`/app`是用于请求服务端的消息路径前缀， `/socket`用于客户端建立连接
 
-#### 添加接口 
+SockJS用于提供浏览器兼容性，当浏览器不支持 WebSocket 时，就会尝试降级为HTTP流或者长轮询的方式以实现和 WebSocket 相同的效果，参考 [4.3. SockJS Fallback](https://docs.spring.io/spring/docs/5.1.8.RELEASE/spring-framework-reference/web.html#websocket-fallback)
 
-- MessageHandler.java
+
+### 群发消息
+
+群发消息可以将消息发送给所有订阅了该消息的客户端，可以通过 `@SendTo`或`org.springframework.messaging.simp.SimpMessagingTemplate#convertAndSend`发送
+
+#### 服务端
+
+- 通过注解实现
 
 ```java
-@Slf4j
-@Controller
-public class MessageHandler {
-
-    @MessageMapping("/message")
+    @MessageMapping("/message/broadcast")
     @SendTo("/response/message")
-    public Message message(String title) {
-        log.info("Receive new message, title is :" + title);
+    public Message broadcastMessage(String title) {
+        log.info("Receive new broadcast message from socket, title is :" + title);
 
         return Message.builder()
                       .title(title)
-                      .content(title + " content!")
+                      .content("Socket Broadcast:" + title + " content!")
                       .createTime(LocalDateTime.now())
                       .build();
     }
-}
 ```
 
-#### 添加客户端
+- 通过 REST接口调用方法实现
 
-使用HTML 构建一个简单的客户端，用于建立连接和发送、接收消息
+```java
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
-- index.html 
+    @GetMapping("/message/broadcast")
+    @ResponseBody
+    public void sendBroadcastMessage(String title) {
+        log.info("Receive new broadcast message from REST interface, title is :" + title);
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>WebSocket</title>
-    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/webjars/jquery/jquery.min.js"></script>
-    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+        Message message = Message.builder()
+                                 .title(title)
+                                 .content("REST Broadcast:" + title + " content!")
+                                 .createTime(LocalDateTime.now())
+                                 .build();
 
-    <script src="/index.js"></script>
-</head>
-<body>
-<div id="main-content" class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <form class="form-inline">
-                <div class="form-group">
-                    <label for="connect">WebSocket Connection:</label>
-                    <button id="connect" class="btn btn-default" type="submit">Connect</button>
-                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">
-                        DisConnect
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-6">
-            <form action="" class="form-inline">
-                <div class="form-group">
-                    <label for="name">Message Title</label>
-                    <input type="text" id="name" class="form-control" placeholder="Input message here...">
-                </div>
-                <button id="send" class="btn btn-default" type="submit">
-                    Send
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <table id="conversation" class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Message</th>
-                </tr>
-                </thead>
-                <tbody id="messages">
-
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-</body>
-</html>
-```
-
-- index.js
-
-```javascript
-var stompClient = null;
-
-function setConnected(connected) {
-    $("#connect").prop("disabled", connected);
-    $("#disconnect").prop("disabled", !connected);
-
-    if (connected) {
-        $("#conversation").show();
-    } else {
-        $("#conversation").hide();
+        simpMessagingTemplate.convertAndSend("/response/message", message);
     }
-    $("#messages").html("");
-}
-
-function connect() {
-    var socket = new SockJS('/socket');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        setConnected(true);
-        console.log('Connected:' + frame);
-        stompClient.subscribe('/response/message', function (message) {
-            console.log("Receive message from server:" + message);
-            showMessage(JSON.parse(message.body));
-        });
-    });
-}
-
-function disconnect() {
-    if (stompClient !== null) {
-        stompClient.disconnect();
-    }
-    setConnected(false);
-    console.log("Disconnected");
-}
-
-function sendMessage() {
-    stompClient.send("/request/message", {}, $("#name").val());
-}
-
-function showMessage(message) {
-    $("#messages").append("<tr><td>" + message.title + ":" + message.content + "</td></tr>")
-}
-
-$(function () {
-    $("form").on('submit', function (e) {
-        e.preventDefault();
-    });
-
-    $("#connect").click(function () {
-        connect();
-    });
-
-    $("#disconnect").click(function () {
-        disconnect();
-    });
-
-    $("#send").click(function () {
-        sendMessage();
-    });
-});
 ```
 
-- 建立连接并订阅消息
+#### 客户端
 
 ```javascript
 function connect() {
     var socket = new SockJS('/socket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        setConnected(true);
-        console.log('Connected:' + frame);
         stompClient.subscribe('/response/message', function (message) {
             console.log("Receive message from server:" + message);
-            showMessage(JSON.parse(message.body));
         });
     });
 }
-```
 
-- 发送消息
-
-```javascript
 function sendMessage() {
-    stompClient.send("/request/message", {}, $("#name").val());
+    stompClient.send('/request/message/broadcast', {}, "Message");
 }
 ```
 
-## 测试 
+#### 测试
 
-- 启动应用，打开两个浏览器，访问 [http://localhost:8080/](http://localhost:8080/)
+- 启动应用，用两个不同的浏览器访问 [localhost:8080](localhost:8080)
+- 广播消息建立连接，并发送消息，此时可以看到两个浏览器都收到了刚才发送的消息
+- 通过 REST 接口：
 
-![localhost:8080](../img/WebSocket1.png)
+```bash
+curl 'localhost:8080/message/broadcast?title=hello'
+```
 
-- 点击 Connect，建立连接
 
-![建立连接](../img/WebSocket2.png)
+### 发送给指定客户端
 
-- 其中任意一个发送一个消息，两个浏览器都可以接受到这个消息
+群发消息可以将消息发送给所有订阅了该消息的客户端，可以通过 `@SendToUser`或`org.springframework.messaging.simp.SimpMessagingTemplate#convertAndSendToUser`发送
 
-![发送消息](../img/WebSocket3.png)
+#### 服务端
+
+发送给指定客户端，要求客户端有指定的用户名，通过继承`org.springframework.web.socket.server.support.DefaultHandshakeHandler`实现
+
+- CustomPrinciple.java
+
+```java
+@AllArgsConstructor
+public class CustomPrinciple implements Principal {
+
+    private String name;
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+}
+```
+
+- CustomHandshakeHandler.java
+
+```java
+@Slf4j
+public class CustomHandshakeHandler extends DefaultHandshakeHandler {
+
+    @Override
+    protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler, Map<String, Object> attributes) {
+        String userId = UUID.randomUUID().toString();
+        log.info("Current username is: {}", userId);
+        return new CustomPrinciple(userId);
+    }
+}
+```
+
+- WebSocketConfig.java
+
+```java
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/socket")
+                .setHandshakeHandler(new CustomHandshakeHandler())
+                .withSockJS();
+
+    }
+```
+
+- 通过注解实现
+
+```java
+    @MessageMapping("/message/specify")
+    @SendToUser("/response/message")
+    public Message speicifyMessage(String title) {
+        log.info("Receive new specify message from socket, title is :" + title);
+
+        return Message.builder()
+                      .title(title)
+                      .content("Socket Specify:" + title + " content!")
+                      .createTime(LocalDateTime.now())
+                      .build();
+    }
+```
+
+- 通过调用方法实现
+
+```java
+    @GetMapping("/message/specify")
+    @ResponseBody
+    public void sendSpecifyUserMessage(String title, String username) {
+        log.info("Receive new specify message from REST interface, title is :" + title);
+
+        Message message = Message.builder()
+                                 .title(title)
+                                 .content("REST Specify:" + title + " content!")
+                                 .createTime(LocalDateTime.now())
+                                 .build();
+
+        simpMessagingTemplate.convertAndSendToUser(username, "/response/message", message);
+    }
+``` 
+
+
+#### 客户端
+
+```javascript
+function connect() {
+    var socket = new SockJS('/socket');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe('/user/response/message', function (message) {
+            console.log("Receive message from server:" + message);
+        });
+    });
+}
+
+function sendMessage() {
+    stompClient.send('/request/message/specify', {}, "Message");
+}
+```
+
+
+需要注意的是，发送给指定用户的消息订阅时需要添加额外的 `/user`前缀
+
+#### 测试
+
+- 启动应用，用两个不同的浏览器访问 [localhost:8080](localhost:8080)
+- 指定消息建立连接，并发送消息，此时只有发送消息的那个浏览器才能收到消息，另一个没有收到
+- 通过 REST 接口：
+建立连接后可以在控制台看到相应的 username 
+
+```bash
+curl 'localhost:8080/message/specify?title=hello&username=ff3cb2ca-9579-46fb-973b-b1bd6420f610'
+```
+此时相应的客户端会收到发送的消息，而另一个没有
 
 -------------
 
@@ -245,3 +244,4 @@ function sendMessage() {
 
 - [Using WebSocket to build an interactive web application](https://spring.io/guides/gs/messaging-stomp-websocket/)
 - [Spring Boot + WebSockets + Angular 5](https://medium.com/oril/spring-boot-websockets-angular-5-f2f4b1c14cee)
+- [Spring MVC 3.2 Preview: Techniques for Real-time Updates](https://spring.io/blog/2012/05/08/spring-mvc-3-2-preview-techniques-for-real-time-updates/)

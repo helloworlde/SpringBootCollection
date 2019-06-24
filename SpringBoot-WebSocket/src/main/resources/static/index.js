@@ -1,8 +1,8 @@
 var stompClient = null;
 
-function setConnected(connected) {
-    $("#connect").prop("disabled", connected);
-    $("#disconnect").prop("disabled", !connected);
+function setConnected(connected, prefix) {
+    $("#" + prefix + "Connect").prop("disabled", connected);
+    $("#" + prefix + "Disconnect").prop("disabled", !connected);
 
     if (connected) {
         $("#conversation").show();
@@ -12,15 +12,12 @@ function setConnected(connected) {
     $("#messages").html("");
 }
 
-function connect() {
+function connect(destination, prefix) {
     var socket = new SockJS('/socket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        setConnected(true);
+        setConnected(true, prefix);
         console.log('Connected:' + frame);
-        var userName = JSON.parse(JSON.stringify(frame.headers).replace('user-name', 'username')).username;
-        var destination = '/user/' + userName + '/response/message';
-        // var destination = '/response/message';
         console.log("Destination is :" + destination);
         stompClient.subscribe(destination, function (message) {
             console.log("Receive message from server:" + message);
@@ -29,26 +26,20 @@ function connect() {
     });
 }
 
-function disconnect() {
+function disconnect(prefix) {
     if (stompClient !== null) {
         stompClient.disconnect();
     }
-    setConnected(false);
+    setConnected(false, prefix);
     console.log("Disconnected");
 }
 
-function sendMessage() {
-    stompClient.send("/request/message", {}, $("#name").val());
+function sendMessage(destination, prefix) {
+    stompClient.send(destination, {}, $("#" + prefix + "Name").val());
 }
 
 function showMessage(message) {
-    Notification.requestPermission(function (status) {
-        new Notification(message.title, {
-            body: message.content,
-            icon: "https://helloworlde.github.io/css/images/logo.png"
-        });
-    });
-    $("#messages").append("<tr><td>" + message.title + ":" + message.content + "</td></tr>")
+    $("#messages").append("<tr><td>" + message.content + "</td></tr>")
 }
 
 $(function () {
@@ -56,23 +47,25 @@ $(function () {
         e.preventDefault();
     });
 
-    $("#connect").click(function () {
-        connect();
+    $("#broadcastConnect").click(function () {
+        connect('/response/message', 'broadcast');
+    });
+    $("#specifyConnect").click(function () {
+        connect('/user/response/message', 'specify');
     });
 
-    $("#disconnect").click(function () {
-        disconnect();
+    $("#broadcastDisconnect").click(function () {
+        disconnect('broadcast');
     });
 
-    $("#send").click(function () {
-        sendMessage();
+    $("#specifyDisconnect").click(function () {
+        disconnect('specify');
     });
 
-    if (window.Notification && Notification.permission !== "granted") {
-        Notification.requestPermission(function (status) {
-            if (Notification.permission !== status) {
-                Notification.permission = status;
-            }
-        });
-    }
+    $("#broadcastSend").click(function () {
+        sendMessage("/request/message/broadcast", 'broadcast');
+    });
+    $("#specifySend").click(function () {
+        sendMessage("/request/message/specify", 'specify');
+    });
 });

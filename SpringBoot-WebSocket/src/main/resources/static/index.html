@@ -16,9 +16,9 @@
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">
-                    <label for="connect">WebSocket Connection:</label>
-                    <button id="connect" class="btn btn-default" type="submit">Connect</button>
-                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">
+                    <label for="broadcastConnect">Broadcast Connection:</label>
+                    <button id="broadcastConnect" class="btn btn-default" type="submit">Connect</button>
+                    <button id="broadcastDisconnect" class="btn btn-default" type="submit" disabled="disabled">
                         DisConnect
                     </button>
                 </div>
@@ -27,11 +27,35 @@
         <div class="col-md-6">
             <form action="" class="form-inline">
                 <div class="form-group">
-                    <label for="name">Message Title</label>
-                    <input type="text" id="name" class="form-control" placeholder="Input message here...">
+                    <label for="broadcastName">Broadcast Message</label>
+                    <input type="text" id="broadcastName" class="form-control" placeholder="Input message here...">
                 </div>
-                <button id="send" class="btn btn-default" type="submit">
-                    Send
+                <button id="broadcastSend" class="btn btn-default" type="submit">
+                    Send Broadcast
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="specifyConnect">Specify Connection:</label>
+                    <button id="specifyConnect" class="btn btn-default" type="submit">Connect</button>
+                    <button id="specifyDisconnect" class="btn btn-default" type="submit" disabled="disabled">
+                        DisConnect
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form action="" class="form-inline">
+                <div class="form-group">
+                    <label for="specifyName">Specify Message</label>
+                    <input type="text" id="specifyName" class="form-control" placeholder="Input message here...">
+                </div>
+                <button id="specifySend" class="btn btn-default" type="submit">
+                    Send Specify
                 </button>
             </form>
         </div>

@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import java.security.Principal;
 
 /**
- * @author hehuimin
+ * @author HelloWood
  */
 @AllArgsConstructor
 public class CustomPrinciple implements Principal {
