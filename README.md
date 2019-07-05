@@ -72,6 +72,9 @@
 
 - [Spring Boot 集成 Swagger API 文档工具](SpringBoot-Swagger/README.md)
 
+### Stream
+
+- [Spring Boot 中使用Spring Cloud Stream](SpringBoot-Stream/README.md)
 
 -------------
 
