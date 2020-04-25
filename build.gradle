@@ -28,10 +28,10 @@ subprojects {
         testCompile('junit:junit:4.12')
     }
 
-    task listJars(description: 'Display all compile jars.') << {
-        configurations.compile.each {
-            File file -> println file.name
-        }
-    }
+//    task listJars(description: 'Display all compile jars.') << {
+//        configurations.compile.each {
+//            File file -> println file.name
+//        }
+//    }
 
 }
