@@ -1,6 +1,6 @@
-package io.github.helloworlde.consul.controller;
+package io.github.helloworlde.grpc.controller;
 
-import io.github.helloworlde.consul.feign.ProviderClient;
+import io.github.helloworlde.grpc.feign.ProviderClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;

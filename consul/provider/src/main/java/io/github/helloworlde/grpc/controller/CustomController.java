@@ -1,4 +1,4 @@
-package io.github.helloworlde.consul.controller;
+package io.github.helloworlde.grpc.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

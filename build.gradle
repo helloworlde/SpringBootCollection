@@ -15,6 +15,9 @@ subprojects {
         mavenLocal()
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
         maven { url 'https://repo.spring.io/snapshot' }
         maven { url 'https://repo.spring.io/milestone' }
         mavenCentral()
