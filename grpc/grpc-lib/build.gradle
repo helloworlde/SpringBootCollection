@@ -23,37 +23,6 @@ dependencies {
     }
 }
 
-
-//protobuf {
-//    protoc {
-//        artifact = "com.google.protobuf:protoc:3.11.4"
-//    }
-//    generatedFilesBaseDir = "$projectDir/src/generated"
-//    clean {
-//        delete generatedFilesBaseDir
-//    }
-//    plugins {
-//        grpc {
-//            artifact = 'io.grpc:protoc-gen-grpc-java'
-//        }
-//    }
-//    generateProtoTasks {
-//        all()*.plugins {
-//            grpc {}
-//        }
-//    }
-//}
-//
-//idea {
-//    module {
-//        sourceDirs += file('src/generated/main/java')
-//        sourceDirs += file('src/generated/main/grpc')
-//        generatedSourceDirs += file('src/generated/main/java')
-//        generatedSourceDirs += file('src/generated/main/grpc')
-//    }
-//}
-
-
 protobuf {
     protoc { artifact = "com.google.protobuf:protoc:3.6.1" }
     plugins {
@@ -64,7 +33,6 @@ protobuf {
     }
 }
 
-// Inform IDEs like IntelliJ IDEA, Eclipse or NetBeans about the generated code.
 sourceSets {
     main {
         java {
@@ -73,10 +41,3 @@ sourceSets {
         }
     }
 }
-
-//dependencyManagement {
-//    imports {
-//        mavenBom "io.grpc:grpc-bom:1.16.1"
-//        mavenBom "com.google.protobuf:protobuf-bom:3.11.4"
-//    }
-//}

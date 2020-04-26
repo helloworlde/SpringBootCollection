@@ -18,15 +18,4 @@ public class CustomController {
             put("time", LocalDateTime.now());
         }};
     }
-
-
-    // @GetMapping("/getUserInfo")
-    // public Object getUserInfo(String name) {
-    //
-    //     UserInfoRequest request = UserInfoRequest.newBuilder()
-    //                                              .setName(name)
-    //                                              .build();
-    //     return userInfoGrpc.getUserInfo(request);
-    // }
-
 }
