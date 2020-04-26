@@ -1,8 +1,8 @@
 plugins {
-    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'org.springframework.boot' version '2.1.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
-    id "com.google.protobuf" version "0.8.12"
+//    id "com.google.protobuf" version "0.8.12"
 }
 
 archivesBaseName = 'provider'
@@ -18,15 +18,17 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', "Hoxton.SR1")
+    set('springCloudVersion', "Greenwich.SR5")
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.cloud:spring-cloud-starter-consul-discovery'
 //    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    compile 'net.devh:grpc-server-spring-boot-starter:2.7.0.RELEASE'
+//    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'io.mobike.boot:mofa-boot-starter-grpc:1.0.0.RC3'
+//    compile 'io.mobike.boot:boot:2.0.0-SNAPSHOT'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -48,23 +50,23 @@ test {
 
 
 
-
-protobuf {
-    protoc { artifact = "com.google.protobuf:protoc:3.11.0" }
-    plugins {
-        grpc { artifact = "io.grpc:protoc-gen-grpc-java:1.28.1" }
-    }
-    generateProtoTasks {
-        all()*.plugins { grpc {} }
-    }
-}
-
-// Inform IDEs like IntelliJ IDEA, Eclipse or NetBeans about the generated code.
-sourceSets {
-    main {
-        java {
-            srcDirs 'build/generated/source/proto/main/grpc'
-            srcDirs 'build/generated/source/proto/main/java'
-        }
-    }
-}
+//
+//protobuf {
+//    protoc { artifact = "com.google.protobuf:protoc:3.11.0" }
+//    plugins {
+//        grpc { artifact = "io.grpc:protoc-gen-grpc-java:1.28.1" }
+//    }
+//    generateProtoTasks {
+//        all()*.plugins { grpc {} }
+//    }
+//}
+//
+//// Inform IDEs like IntelliJ IDEA, Eclipse or NetBeans about the generated code.
+//sourceSets {
+//    main {
+//        java {
+//            srcDirs 'build/generated/source/proto/main/grpc'
+//            srcDirs 'build/generated/source/proto/main/java'
+//        }
+//    }
+//}

@@ -4,11 +4,11 @@ import io.github.helloworlde.grpc.proto.UserInfoRequest;
 import io.github.helloworlde.grpc.proto.UserInfoResponse;
 import io.github.helloworlde.grpc.proto.UserInfoServiceGrpc;
 import io.grpc.stub.StreamObserver;
-import net.devh.boot.grpc.server.service.GrpcService;
+import io.mobike.grpc.server.GrpcService;
 
 import java.util.Random;
 
-@GrpcService
+@GrpcService(UserInfoServiceGrpc.class)
 public class UserInfoGrpcImpl extends UserInfoServiceGrpc.UserInfoServiceImplBase {
     private final Random random = new Random();
 
