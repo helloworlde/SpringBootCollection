@@ -13,6 +13,7 @@ subprojects {
 
     repositories {
         mavenLocal()
+        maven { url 'http://repo.mobike.io/maven/'}
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         mavenCentral()
         maven {
@@ -27,7 +28,7 @@ subprojects {
     dependencies {
         compile 'org.projectlombok:lombok:1.18.2'
         compile('org.apache.commons:commons-lang3:3.7')
-        compile('com.google.guava:guava:19.0')
+//        compile('com.google.guava:guava:19.0')
         testCompile('junit:junit:4.12')
     }
 

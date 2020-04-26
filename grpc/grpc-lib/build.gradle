@@ -1,5 +1,15 @@
 plugins {
     id "com.google.protobuf" version "0.8.12"
+    id 'java'
+
+}
+
+archivesBaseName = 'grpc-lib'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 dependencies {
@@ -14,35 +24,53 @@ dependencies {
 }
 
 
-
+//protobuf {
+//    protoc {
+//        artifact = "com.google.protobuf:protoc:3.11.4"
+//    }
+//    generatedFilesBaseDir = "$projectDir/src/generated"
+//    clean {
+//        delete generatedFilesBaseDir
+//    }
+//    plugins {
+//        grpc {
+//            artifact = 'io.grpc:protoc-gen-grpc-java'
+//        }
+//    }
+//    generateProtoTasks {
+//        all()*.plugins {
+//            grpc {}
+//        }
+//    }
+//}
+//
+//idea {
+//    module {
+//        sourceDirs += file('src/generated/main/java')
+//        sourceDirs += file('src/generated/main/grpc')
+//        generatedSourceDirs += file('src/generated/main/java')
+//        generatedSourceDirs += file('src/generated/main/grpc')
+//    }
+//}
 
 
 protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:3.11.4"
-    }
-    generatedFilesBaseDir = "$projectDir/src/generated"
-    clean {
-        delete generatedFilesBaseDir
-    }
+    protoc { artifact = "com.google.protobuf:protoc:3.11.0" }
     plugins {
-        grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java'
-        }
+        grpc { artifact = "io.grpc:protoc-gen-grpc-java:1.28.1" }
     }
     generateProtoTasks {
-        all()*.plugins {
-            grpc {}
-        }
+        all()*.plugins { grpc {} }
     }
 }
 
-idea {
-    module {
-        sourceDirs += file('src/generated/main/java')
-        sourceDirs += file('src/generated/main/grpc')
-        generatedSourceDirs += file('src/generated/main/java')
-        generatedSourceDirs += file('src/generated/main/grpc')
+// Inform IDEs like IntelliJ IDEA, Eclipse or NetBeans about the generated code.
+sourceSets {
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/java'
+        }
     }
 }
 

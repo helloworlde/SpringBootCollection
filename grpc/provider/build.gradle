@@ -24,14 +24,16 @@ ext {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.cloud:spring-cloud-starter-consul-discovery'
-    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+//    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    compile 'net.devh:grpc-spring-boot-starter:2.7.0.RELEASE'
+    compile 'net.devh:grpc-server-spring-boot-starter:2.7.0.RELEASE'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+
+    compile project(':grpc:grpc-lib')
 }
 
 dependencyManagement {
@@ -44,3 +46,25 @@ test {
     useJUnitPlatform()
 }
 
+
+
+
+protobuf {
+    protoc { artifact = "com.google.protobuf:protoc:3.11.0" }
+    plugins {
+        grpc { artifact = "io.grpc:protoc-gen-grpc-java:1.28.1" }
+    }
+    generateProtoTasks {
+        all()*.plugins { grpc {} }
+    }
+}
+
+// Inform IDEs like IntelliJ IDEA, Eclipse or NetBeans about the generated code.
+sourceSets {
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/java'
+        }
+    }
+}
