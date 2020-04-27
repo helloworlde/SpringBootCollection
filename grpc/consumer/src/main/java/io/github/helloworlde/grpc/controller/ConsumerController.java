@@ -5,6 +5,7 @@ import io.github.helloworlde.grpc.proto.UserInfoRequest;
 import io.github.helloworlde.grpc.proto.UserInfoResponse;
 import io.github.helloworlde.grpc.proto.UserInfoServiceGrpc;
 import io.mobike.grpc.client.GrpcStub;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Slf4j
 public class ConsumerController {
 
     @Autowired
@@ -41,7 +43,7 @@ public class ConsumerController {
                                                  .setName(name)
                                                  .build();
         UserInfoResponse response = stub.getUserInfo(request);
-        System.out.println(response.toString());
+        log.info(response.toString());
 
         UserInfoResponseDTO dto = new UserInfoResponseDTO();
         BeanUtils.copyProperties(response, dto);
