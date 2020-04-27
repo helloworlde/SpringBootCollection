@@ -76,6 +76,14 @@
 
 - [Spring Boot 中使用Spring Cloud Stream](SpringBoot-Stream/README.md)
 
+### gRPC
+
+- [Spring Boot 使用 gRPC](grpc/README.md)
+
+### 注册中心
+
+- [Consul](consul/)
+
 -------------
 
 ### 其他
