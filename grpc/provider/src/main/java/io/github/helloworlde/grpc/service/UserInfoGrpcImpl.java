@@ -8,19 +8,21 @@ import io.mobike.grpc.server.GrpcService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @GrpcService(UserInfoServiceGrpc.class)
 @Slf4j
 public class UserInfoGrpcImpl extends UserInfoServiceGrpc.UserInfoServiceImplBase {
     private final Random random = new Random();
 
+    private static final AtomicInteger atomicInteger = new AtomicInteger();
 
     @Override
     public void getUserInfo(UserInfoRequest request, StreamObserver<UserInfoResponse> responseObserver) {
         log.info("收到客户端请求:" + request.getName());
         UserInfoResponse response = UserInfoResponse.newBuilder()
+                                                    .setId(atomicInteger.getAndIncrement())
                                                     .setAge(random.nextInt(100))
-                                                    .setId(random.nextInt(100))
                                                     .setName("Hello " + request.getName())
                                                     .build();
 
