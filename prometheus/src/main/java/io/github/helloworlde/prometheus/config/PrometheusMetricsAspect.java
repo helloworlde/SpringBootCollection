@@ -19,6 +19,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Custom business metrics
+ */
 @Aspect
 @Component
 @Slf4j

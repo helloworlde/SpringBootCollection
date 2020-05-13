@@ -13,6 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Objects;
 
+/**
+ * DataSource custom metrics
+ */
 @Component
 public class DataSourceStatusProbe implements MeterBinder {
     private static final String SELECT_1 = "SELECT 1;";
