@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          url-expression: "'http://'+serviceId+':'+getPort()"
+          lower-case-service-id: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

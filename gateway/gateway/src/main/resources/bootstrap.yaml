@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    kubernetes:
+      discovery:
+        catalogServicesWatchDelay: 5000
+      client:
+        master-url: https://localhost:60002
+        ca-cert-data: xxx
+        namespace: develop
+        username: admin
+        password: xxx
