@@ -6,7 +6,7 @@ spring:
       discovery:
         locator:
           enabled: true
-          url-expression: "'http://'+serviceId+':'+getPort()"
+          #          url-expression: "'http://'+host+':'+port"
           lower-case-service-id: true
 
 management:
@@ -14,3 +14,9 @@ management:
     web:
       exposure:
         include: '*'
+
+logging:
+  level:
+    org.sprikcngframework.cloud.gateway: TRACE
+    org.springframework.cloud.loadbalancer: TRACE
+    org.springframework.cloud: trace
