@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: gateway
-  namespace: develop
+  namespace: default
   labels:
     app: gateway
 spec:
@@ -21,7 +21,7 @@ metadata:
   labels:
     app: gateway
   name: gateway
-  namespace: develop
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -29,11 +29,11 @@ spec:
       app: gateway
   template:
     metadata:
-    labels:
-      app: gateway
+      labels:
+        app: gateway
     spec:
       containers:
-        - image: docker.io/hellowoodes/gateway:1.0.0
+        - image: registry.cn-qingdao.aliyuncs.com/hellowoodes/api-gateway:1.0.1
           imagePullPolicy: IfNotPresent
           name: gateway
           ports:
