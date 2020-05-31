@@ -33,9 +33,9 @@ spec:
         app: gateway
     spec:
       containers:
-        - image: registry.cn-qingdao.aliyuncs.com/hellowoodes/api-gateway:1.0.5
+        - name: gateway
+          image: registry.cn-qingdao.aliyuncs.com/hellowoodes/api-gateway:client_lb
           imagePullPolicy: IfNotPresent
-          name: gateway
           ports:
             - containerPort: 8080
               name: http
