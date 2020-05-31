@@ -33,7 +33,7 @@ spec:
         app: gateway
     spec:
       containers:
-        - image: registry.cn-qingdao.aliyuncs.com/hellowoodes/api-gateway:1.0.1
+        - image: registry.cn-qingdao.aliyuncs.com/hellowoodes/api-gateway:1.0.5
           imagePullPolicy: IfNotPresent
           name: gateway
           ports:

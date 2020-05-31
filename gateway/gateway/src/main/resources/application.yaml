@@ -6,8 +6,10 @@ spring:
       discovery:
         locator:
           enabled: true
-          #          url-expression: "'http://'+host+':'+port"
           lower-case-service-id: true
+#          无负载均衡依赖本地测试使用
+#          url-expression: "'http://'+host+':'+port"
+#          url-expression: "'http://'+serviceId+':'+port"
 
 management:
   endpoints:

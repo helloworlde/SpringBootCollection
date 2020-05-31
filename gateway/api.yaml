@@ -32,7 +32,7 @@ spec:
         app: api
     spec:
       containers:
-        - image: registry.cn-qingdao.aliyuncs.com/hellowoodes/api-gateway:1.0.1
+        - image: registry.cn-qingdao.aliyuncs.com/hellowoodes/api:1.0.3
           imagePullPolicy: IfNotPresent
           name: api
           ports:
