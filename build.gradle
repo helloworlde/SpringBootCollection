@@ -27,7 +27,7 @@ subprojects {
 
     dependencies {
         compile 'org.projectlombok:lombok:1.18.2'
-        compile('org.apache.commons:commons-lang3:3.7')
+        compile('org.apache.commons:commons-lang3:3.10')
 //        compile('com.google.guava:guava:19.0')
         testCompile('junit:junit:4.12')
     }

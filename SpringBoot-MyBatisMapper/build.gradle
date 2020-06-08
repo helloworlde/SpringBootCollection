@@ -30,7 +30,7 @@ dependencies {
     compile('org.freemarker:freemarker:2.3.23')
     compile('tk.mybatis:mapper:3.4.2')
     compile('commons-codec:commons-codec')
-    compile('org.apache.commons:commons-lang3:3.6')
+    compile('org.apache.commons:commons-lang3:3.10')
     compile('com.google.guava:guava:23.0')
     compile('org.mybatis.generator:mybatis-generator-core:1.3.5')
     runtime('mysql:mysql-connector-java')
