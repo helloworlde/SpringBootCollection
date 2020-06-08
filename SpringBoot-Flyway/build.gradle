@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
     compile('org.flywaydb:flyway-core')
-    compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.1')
+    compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.3')
     compile('org.springframework.boot:spring-boot-starter-web')
     runtime('mysql:mysql-connector-java')
     runtime('com.h2database:h2')
