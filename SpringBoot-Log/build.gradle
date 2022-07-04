@@ -1,0 +1,35 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.9.RELEASE'
+	}
+	repositories {
+		maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+archivesBaseName = 'Log'
+
+repositories {
+	maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+	mavenCentral()
+}
+
+
+dependencies {
+	// This dependency is for annotation like @Slf4j, @Data
+	compile 'org.projectlombok:lombok:1.16.18'
+
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('net.logstash.logback:logstash-logback-encoder:4.11')
+	runtime('mysql:mysql-connector-java')
+	runtime('com.h2database:h2')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}

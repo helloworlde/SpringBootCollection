@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+
+    <script src="/index.js"></script>
+</head>
+<body>
+<div id="main-content" class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="broadcastConnect">Broadcast Connection:</label>
+                    <button id="broadcastConnect" class="btn btn-default" type="submit">Connect</button>
+                    <button id="broadcastDisconnect" class="btn btn-default" type="submit" disabled="disabled">
+                        DisConnect
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form action="" class="form-inline">
+                <div class="form-group">
+                    <label for="broadcastName">Broadcast Message</label>
+                    <input type="text" id="broadcastName" class="form-control" placeholder="Input message here...">
+                </div>
+                <button id="broadcastSend" class="btn btn-default" type="submit">
+                    Send Broadcast
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="specifyConnect">Specify Connection:</label>
+                    <button id="specifyConnect" class="btn btn-default" type="submit">Connect</button>
+                    <button id="specifyDisconnect" class="btn btn-default" type="submit" disabled="disabled">
+                        DisConnect
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form action="" class="form-inline">
+                <div class="form-group">
+                    <label for="specifyName">Specify Message</label>
+                    <input type="text" id="specifyName" class="form-control" placeholder="Input message here...">
+                </div>
+                <button id="specifySend" class="btn btn-default" type="submit">
+                    Send Specify
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table id="conversation" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Message</th>
+                </tr>
+                </thead>
+                <tbody id="messages">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

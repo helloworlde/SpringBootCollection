@@ -1,0 +1,42 @@
+plugins {
+    id "com.google.protobuf" version "0.8.8"
+    id 'java'
+}
+
+archivesBaseName = 'grpc-lib'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+dependencies {
+    implementation 'io.grpc:grpc-netty-shaded:1.16.1'
+    implementation 'io.grpc:grpc-protobuf:1.16.1'
+    implementation 'io.grpc:grpc-stub:1.16.1'
+    if (JavaVersion.current().isJava9Compatible()) {
+        // Workaround for @javax.annotation.Generated
+        // see: https://github.com/grpc/grpc-java/issues/3633
+        implementation 'jakarta.annotation:jakarta.annotation-api'
+    }
+}
+
+protobuf {
+    protoc { artifact = "com.google.protobuf:protoc:3.6.1" }
+    plugins {
+        grpc { artifact = "io.grpc:protoc-gen-grpc-java:1.16.1" }
+    }
+    generateProtoTasks {
+        all()*.plugins { grpc {} }
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/java'
+        }
+    }
+}
